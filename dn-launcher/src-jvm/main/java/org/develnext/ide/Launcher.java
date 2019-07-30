@@ -66,10 +66,10 @@ public class Launcher {
     }
 
     public void start() throws URISyntaxException, IOException, InterruptedException {
-        if (!isJava8FxExists()) {
+        /*if (!isJava8FxExists()) {
             JOptionPane.showMessageDialog(null, "Oracle/Open Java Runtime 8+ required with JavaFX", "Error", JOptionPane.ERROR_MESSAGE);
             return;
-        }
+        }*/
 
         rootDir = new File(Launcher.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParentFile();
 
