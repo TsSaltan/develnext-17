@@ -11,6 +11,7 @@ ide\commands\ExitCommand
 ide\commands\ChangeThemeCommand
 
 ide\commands\RunTaskCommand
+ide\commands\PtyCommand
 
 ide\commands\IdeLogShowCommand
 ide\commands\IdeSandboxShowCommand
