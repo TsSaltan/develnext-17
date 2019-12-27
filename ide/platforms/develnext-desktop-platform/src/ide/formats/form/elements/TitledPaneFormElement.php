@@ -1,6 +1,7 @@
 <?php
 namespace ide\formats\form\elements;
 
+use ide\Ide;
 use ide\editors\value\BooleanPropertyEditor;
 use ide\editors\value\ColorPropertyEditor;
 use ide\editors\value\FontPropertyEditor;
@@ -9,15 +10,15 @@ use ide\editors\value\PositionPropertyEditor;
 use ide\editors\value\SimpleTextPropertyEditor;
 use ide\editors\value\TextPropertyEditor;
 use ide\formats\form\AbstractFormElement;
-use php\gui\designer\UXDesignProperties;
-use php\gui\designer\UXDesignPropertyEditor;
-use php\gui\layout\UXAnchorPane;
-use php\gui\layout\UXHBox;
 use php\gui\UXButton;
 use php\gui\UXNode;
 use php\gui\UXTableCell;
 use php\gui\UXTextField;
 use php\gui\UXTitledPane;
+use php\gui\designer\UXDesignProperties;
+use php\gui\designer\UXDesignPropertyEditor;
+use php\gui\layout\UXAnchorPane;
+use php\gui\layout\UXHBox;
 
 /**
  * Class ButtonFormElement
@@ -76,8 +77,9 @@ class TitledPaneFormElement extends AbstractFormElement
      * @return UXNode
      */
     public function createElement()
-    {
-        $button = new UXTitledPane($this->getName());
+    {   
+        $name = Ide::get()->getLocalizer()->translate($this->getName());
+        $button = new UXTitledPane($name);
         $button->content = new UXAnchorPane();
         return $button;
     }

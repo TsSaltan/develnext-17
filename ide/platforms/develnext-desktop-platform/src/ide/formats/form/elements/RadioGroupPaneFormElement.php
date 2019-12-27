@@ -1,6 +1,7 @@
 <?php
 namespace ide\formats\form\elements;
 
+use ide\Ide;
 use ide\formats\form\AbstractFormElement;
 use php\gui\UXListView;
 use php\gui\UXNode;
@@ -40,9 +41,10 @@ class RadioGroupPaneFormElement extends AbstractFormElement
      * @return UXNode
      */
     public function createElement()
-    {
+    {   
+        $name = Ide::get()->getLocalizer()->translate($this->getName());
         $button = new UXRadioGroupPane();
-        $button->items->addAll([$this->getName() . ' 1', $this->getName() . ' 2', $this->getName() . ' 3']);
+        $button->items->addAll([$name . ' 1', $name . ' 2', $name . ' 3']);
 
         return $button;
     }
