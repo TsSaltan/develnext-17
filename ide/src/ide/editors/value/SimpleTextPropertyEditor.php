@@ -1,17 +1,19 @@
 <?php
 namespace ide\editors\value;
 
+use ide\Logger;
 use ide\forms\TextPropertyEditorForm;
 use ide\utils\UiUtils;
-use php\gui\designer\UXDesignPropertyEditor;
-use php\gui\event\UXMouseEvent;
-use php\gui\layout\UXHBox;
 use php\gui\UXButton;
 use php\gui\UXNode;
 use php\gui\UXTableCell;
 use php\gui\UXTextField;
 use php\gui\UXTooltip;
 use php\gui\UXWindow;
+use php\gui\designer\UXDesignPropertyEditor;
+use php\gui\event\UXMouseEvent;
+use php\gui\layout\UXHBox;
+use php\lang\JavaException;
 use php\xml\DomElement;
 use function uiLater;
 
@@ -54,14 +56,9 @@ class SimpleTextPropertyEditor extends ElementPropertyEditor
         parent::setTooltip($tooltip);
 
         if ($this->tooltip && $this->textField) {
-            $tooltip = new UXTooltip();
-            $tooltip->text = $this->tooltip;
-            UiUtils::setWatchingFocusable($tooltip);
+            $this->textField->tooltipText = $tooltip;
+        } 
 
-            uiLater(function () use ($tooltip) {
-                $this->textField->tooltip = $tooltip;
-            });
-        }
     }
 
     /**
