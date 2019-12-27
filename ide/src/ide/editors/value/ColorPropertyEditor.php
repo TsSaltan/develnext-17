@@ -2,12 +2,14 @@
 namespace ide\editors\value;
 
 use ide\forms\TextPropertyEditorForm;
-use php\gui\event\UXMouseEvent;
-use php\gui\layout\UXHBox;
-use php\gui\paint\UXColor;
 use php\gui\UXButton;
 use php\gui\UXColorPicker;
 use php\gui\UXWindow;
+use php\gui\event\UXEvent;
+use php\gui\event\UXMouseEvent;
+use php\gui\layout\UXHBox;
+use php\gui\paint\UXColor;
+use php\lang\IllegalArgumentException;
 use php\xml\DomElement;
 
 class ColorPropertyEditor extends ElementPropertyEditor
@@ -45,11 +47,12 @@ class ColorPropertyEditor extends ElementPropertyEditor
         UXHBox::setHgrow($this->colorPicker, 'ALWAYS');
         $this->colorPicker->style = "-fx-background-insets: 0; -fx-background-radius: 0; -fx-font-size: 10px; ";
 
-        $this->colorPicker->on('action', function () {
-            $this->applyValue($this->colorPicker->value, false);
+        // Где ни поставь try-catch, всё равно вылазит IllegalArgumentException, похоже баганый элемент colorPicker
+        $this->colorPicker->on('action', function (UXEvent $event) {
+            $this->applyValue($event->sender->value, false);
 
-            uiLater(function () {
-                $value = $this->getNormalizedValue($this->colorPicker->value);
+            uiLater(function () use ($event){
+                $value = $this->getNormalizedValue($event->sender->value);
                 $this->updateUi($value);
             });
         });

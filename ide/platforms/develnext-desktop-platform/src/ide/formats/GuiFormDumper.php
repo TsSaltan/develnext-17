@@ -330,7 +330,7 @@ class GuiFormDumper extends AbstractFormDumper
                                     break;
                                 }
                             } catch (IllegalArgumentException $e){
-                                Logger::warn("Catch IllegalArgumentException on writing element " . $class->getName());
+                                Logger::warn("Catched " . get_class($e) . " on writing element " . $class->getName() . " : " . $e->getMessage());
                             }
                         } else {
                             if (!$class->isAbstract()) {

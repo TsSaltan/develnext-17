@@ -174,7 +174,7 @@ abstract class ElementPropertyEditor extends UXDesignPropertyEditor
             $cell->graphic = $this->content;
             $this->updateUi($this->getNormalizedValue($this->getValue()), true);
         } catch (IllegalArgumentException $e) {
-            Logger::warn("Catched IllegalArgumentException: " . $e->getMessage());
+            Logger::warn("Catched " . get_class($e) . ": " . $e->getMessage());
         }
     }
 
