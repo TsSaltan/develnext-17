@@ -14,7 +14,6 @@ use php\io\Stream;
 use php\lib\arr;
 use php\lib\fs;
 use php\lib\str;
-use php\util\Configuration;
 
 class ProjectSkin extends AbstractEntity
 {
