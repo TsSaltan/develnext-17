@@ -2,19 +2,16 @@
 namespace ide\formats;
 
 use Exception;
+use ReflectionClass;
+use ide\Ide;
+use ide\Logger;
 use ide\editors\FormEditor;
 use ide\formats\form\AbstractFormDumper;
 use ide\formats\form\AbstractFormElementTag;
 use ide\formats\form\tags\CloneFormElementTag;
-use ide\Ide;
-use ide\Logger;
 use ide\misc\EventHandlerBehaviour;
 use ide\utils\FileUtils;
 use php\format\ProcessorException;
-use php\gui\designer\UXDesigner;
-use php\gui\framework\DataUtils;
-use php\gui\layout\UXAnchorPane;
-use php\gui\layout\UXPane;
 use php\gui\UXCustomNode;
 use php\gui\UXData;
 use php\gui\UXDialog;
@@ -22,15 +19,19 @@ use php\gui\UXForm;
 use php\gui\UXLoader;
 use php\gui\UXNode;
 use php\gui\UXScene;
+use php\gui\designer\UXDesigner;
+use php\gui\framework\DataUtils;
+use php\gui\layout\UXAnchorPane;
+use php\gui\layout\UXPane;
 use php\io\IOException;
 use php\io\MemoryStream;
 use php\io\Stream;
+use php\lang\IllegalArgumentException;
 use php\lib\fs;
 use php\lib\reflect;
 use php\xml\DomDocument;
 use php\xml\DomElement;
 use php\xml\XmlProcessor;
-use ReflectionClass;
 
 class GuiFormDumper extends AbstractFormDumper
 {
@@ -315,17 +316,21 @@ class GuiFormDumper extends AbstractFormDumper
 
                         if ($tag != null) {
                             //Logger::debug("Write " . reflect::typeOf($tag) . ", id = $node->id");
-                            $testNode = $tag->createTestNode($node, $this->testScene);
+                            try {
+                                $testNode = $tag->createTestNode($node, $this->testScene);
 
-                            $tag->writeAttributes($node, $element);
-                            $tag->writeContent($node, $element, $document, $this);
+                                $tag->writeAttributes($node, $element);
+                                $tag->writeContent($node, $element, $document, $this);
 
-                            if ($testNode) {
-                                $testNode->free();
-                            }
+                                if ($testNode) {
+                                    $testNode->free();
+                                }
 
-                            if ($tag->isFinal()) {
-                                break;
+                                if ($tag->isFinal()) {
+                                    break;
+                                }
+                            } catch (IllegalArgumentException $e){
+                                Logger::warn("Catch IllegalArgumentException on writing element " . $class->getName());
                             }
                         } else {
                             if (!$class->isAbstract()) {
