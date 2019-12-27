@@ -144,7 +144,7 @@ abstract class ElementPropertyEditor extends UXDesignPropertyEditor
      */
     public function setTooltip($tooltip)
     {
-        $this->tooltip = "$tooltip";
+        $this->tooltip = strval($tooltip);
     }
 
     /**
@@ -170,8 +170,12 @@ abstract class ElementPropertyEditor extends UXDesignPropertyEditor
      */
     public function update(UXTableCell $cell, $empty)
     {
-        $cell->graphic = $this->content;
-        $this->updateUi($this->getNormalizedValue($this->getValue()), true);
+        try {
+            $cell->graphic = $this->content;
+            $this->updateUi($this->getNormalizedValue($this->getValue()), true);
+        } catch (IllegalArgumentException $e) {
+            Logger::warn("Catched IllegalArgumentException: " . $e->getMessage());
+        }
     }
 
     public function setAsFormConfigProperty($defaultValue, $realCode = null)
